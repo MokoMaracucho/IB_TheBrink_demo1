@@ -40,6 +40,7 @@ export class Page001Service {
     this.engine = new BABYLON.Engine(this.canvas, true);
 
     this.scene = new BABYLON.Scene(this.engine);
+    this.scene.clearColor = BABYLON.Color4.FromHexString('#ff4200FF');
 
     this.camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 0, 0), this.scene);
     this.camera.position = new BABYLON.Vector3(10, 10, 10);
