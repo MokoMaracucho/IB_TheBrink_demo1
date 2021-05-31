@@ -67,57 +67,22 @@ export class Page001Service {
     BABYLON.SceneLoader.ImportMeshAsync("lion", "../../assets/glb/page-001/", "lion.glb", this.scene).then((result) => {
     });
 
-    const boxMaterial = new BABYLON.StandardMaterial('BoxMaterial', this.scene);
-    boxMaterial.diffuseColor = BABYLON.Color3.FromHexString('#ffffff');
-    boxMaterial.specularColor = BABYLON.Color3.FromHexString('#000000');
-    boxMaterial.indexOfRefraction = 1;
+    const circle_MATERIAL = new BABYLON.StandardMaterial('BoxMaterial', this.scene);
+    circle_MATERIAL.alpha = 0.1;
+    circle_MATERIAL.transparencyMode = 4;
 
     // Plane
 
-    var probe = new BABYLON.ReflectionProbe("main", 512, this.scene);
-
     BABYLON.SceneLoader.ImportMeshAsync("brink", "../../assets/glb/page-001/", "brink.glb", this.scene).then((result) => {
       this.brink = this.scene.getMeshByName("brink");
-      probe.renderList.push(this.brink);
     });
-
-    /* const plane = BABYLON.MeshBuilder.CreatePlane('BackPlane', {width: 6, height: 3.5}, this.scene)
-    plane.position.z = -5;
-    plane.rotation.y = Math.PI;
-    const planeMaterial = new BABYLON.StandardMaterial('PlaneMaterial', this.scene);
-    planeMaterial.diffuseTexture = new BABYLON.Texture('/assets/amiga', this.scene);
-    plane.material = planeMaterial */
-
-    /* const refractionTexture = new BABYLON.RefractionTexture('RefractionTexture', 1024, this.scene, true)
-    refractionTexture.refractionPlane = new BABYLON.Plane(0, 0, 1, 0)
-    refractionTexture.depth = 2;
-    refractionTexture.level = 0.3;
-    refractionTexture.renderList.push(this.brink); */
-
-    boxMaterial.refractionTexture = probe.cubeTexture;
-
-
-    /* const boxMaterial = new BABYLON.StandardMaterial('BoxMaterial', this.scene);
-    boxMaterial.indexOfRefraction = 0.6;
-
-    const plane = BABYLON.MeshBuilder.CreateBox('BackPlane', {width: 6, height: 3.5}, this.scene);
-    plane.position.z = -5;
-    const planeMaterial = new BABYLON.StandardMaterial('PlaneMaterial', this.scene);
-    planeMaterial.diffuseTexture = new BABYLON.Texture('/assets/amiga', this.scene);
-    plane.material = planeMaterial;
-
-    const refractionTexture = new BABYLON.RefractionTexture('RefractionTexture', 1024, this.scene, true)
-    refractionTexture.refractionPlane = new BABYLON.Plane(0, 0, -1, 0)
-    refractionTexture.depth = 2
-    refractionTexture.renderList.push(plane); */
 
     BABYLON.SceneLoader.ImportMeshAsync("circle", "../../assets/glb/page-001/", "circle.glb", this.scene).then((result) => {
       this.circle = this.scene.getMeshByName("circle");
-      this.circle.material = boxMaterial;
+      this.circle.material = circle_MATERIAL;
+      this.circle.adaptiveBlurKernel = 5;
       /* this.circle.refractionTexture = refractionTexture; */
     });
-
-    probe.attachToMesh(this.circle);
 
     // AXIS
 
