@@ -17,7 +17,7 @@ export class Page001Service {
   private engine: BABYLON.Engine;
   private scene: BABYLON.Scene;
 
-  private camera: BABYLON.UniversalCamera;
+  private camera: BABYLON.ArcRotateCamera;
 
   private light: BABYLON.Light;
 
@@ -42,20 +42,31 @@ export class Page001Service {
     this.scene = new BABYLON.Scene(this.engine);
     this.scene.clearColor = BABYLON.Color4.FromHexString('#ff4200FF');
 
-    this.camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 0, 0), this.scene);
-    this.camera.position = new BABYLON.Vector3(10, 10, 10);
-    this.camera.target = new BABYLON.Vector3(0, 0, 0);
+    // CAMERA
+
+    this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), this.scene);
+    this.camera.setPosition(new BABYLON.Vector3(0, 0, 20));
+    this.camera.target = new BABYLON.Vector3(0, 3, 0);
+    this.camera.fov = 0.5;
+    this.camera.wheelDeltaPercentage = 0.001;
+    this.camera.pinchDeltaPercentage = 0.01;
+    // this.camera.lowerAlphaLimit =
+    this.camera.lowerBetaLimit = 0.5;
+    this.camera.lowerRadiusLimit = 20;
+    // this.camera.upperAlphaLimit =
+    this.camera.upperBetaLimit = 2;
+    this.camera.upperRadiusLimit = 20;
     this.camera.attachControl(canvas, true);
 
     this.light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), this.scene);
     this.light.intensity = 1;
 
-    BABYLON.SceneLoader.ImportMeshAsync("test", "../../assets/glb/page-001/", "test.glb", this.scene).then((result) => {
+    BABYLON.SceneLoader.ImportMeshAsync("lion", "../../assets/glb/page-001/", "lion.glb", this.scene).then((result) => {
     });
 
     // AXIS
 
-    this.axis_X = BABYLON.MeshBuilder.CreateBox("axis_X", {height: 0.2, width: 0.2, depth: 0.2});
+    /* this.axis_X = BABYLON.MeshBuilder.CreateBox("axis_X", {height: 0.2, width: 0.2, depth: 0.2});
     this.axis_X.position = new BABYLON.Vector3(5, 0, 0);
     this.axis_X_MATERIAL = new BABYLON.StandardMaterial("axis_X_MATERIAL", this.scene);
     this.axis_X_MATERIAL.diffuseColor = new BABYLON.Color3(1, 0, 0);
@@ -74,7 +85,7 @@ export class Page001Service {
     this.axis_Z_MATERIAL = new BABYLON.StandardMaterial("axis_Z_MATERIAL", this.scene);
     this.axis_Z_MATERIAL.diffuseColor = new BABYLON.Color3(0, 0, 1);
     this.axis_Z_MATERIAL.specularColor = new BABYLON.Color3(0, 0, 1);
-    this.axis_Z.material = this.axis_Z_MATERIAL;
+    this.axis_Z.material = this.axis_Z_MATERIAL; */
   }
 
   // ANIMATE
