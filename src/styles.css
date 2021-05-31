@@ -1,0 +1,13 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import 'material-icons/iconfont/material-icons.css';
+
+/* BODY */
+
+html, body {
+  font-family: Roboto-Regular;
+  touch-action: none;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  padding: env(safe-area-inset);
+}
