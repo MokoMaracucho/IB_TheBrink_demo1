@@ -99,8 +99,13 @@ export class Page001Service {
 
     // Plane
 
+    const brink_MATERIAL = new BABYLON.PBRMaterial('brink_MATERIAL', this.scene);
+    brink_MATERIAL.roughness = 1;
+    brink_MATERIAL.albedoColor = new BABYLON.Color3(0, 0, 0);
+
     BABYLON.SceneLoader.ImportMeshAsync("brink", "../../assets/glb/page-001/", "brink.glb", this.scene).then((result) => {
       this.brink = this.scene.getMeshByName("brink");
+      this.brink.material = brink_MATERIAL;
     });
 
     BABYLON.SceneLoader.ImportMeshAsync("glass", "../../assets/glb/page-001/", "glass.glb", this.scene).then((result) => {
