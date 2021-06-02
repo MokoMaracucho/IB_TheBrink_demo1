@@ -47,6 +47,10 @@ export class Page001Service {
     this.scene = new BABYLON.Scene(this.engine);
     this.scene.clearColor = BABYLON.Color4.FromHexString('#ff4200FF');
 
+    const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("../../assets/env/CUBEMAP_refraction_3.env", this.scene);
+    hdrTexture.rotationY = Math.PI;
+    this.scene.environmentTexture = hdrTexture;
+
     // CAMERA
 
     this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), this.scene);
@@ -68,17 +72,19 @@ export class Page001Service {
 
     BABYLON.SceneLoader.ImportMeshAsync("lion", "../../assets/glb/page-001/", "lion.glb", this.scene).then((result) => {
       this.lion = this.scene.getMeshByName("lion");
+      this.lion.material.reflectionTexture = null;
     });
 
-    var probe = new BABYLON.ReflectionProbe("main", 512, this.scene);
-    probe.position = new BABYLON.Vector3(0, 2.4, 4);
+    var pointLight = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(1, 2.4, 10), this.scene);
+    pointLight.intensity = 1;
 
-    var kernel = 32.0;
+    const circle_MATERIAL = new BABYLON.PBRMaterial('BoxMaterial', this.scene);
+    circle_MATERIAL.diffuseColor = new BABYLON.Vector4(1, 1, 1, 0.1);
+    circle_MATERIAL.metallic = 0.1;
+    circle_MATERIAL.roughness = 0.2;
 
-
-
-    const circle_MATERIAL = new BABYLON.StandardMaterial('BoxMaterial', this.scene);
-    circle_MATERIAL.diffuseColor = new BABYLON.Vector4(0, 0, 0, 0);
+    circle_MATERIAL.subSurface.isRefractionEnabled = true;
+    circle_MATERIAL.subSurface.indexOfRefraction = 0.5;
     /* circle_MATERIAL.alpha = 0.1; */
     /* circle_MATERIAL.transparencyMode = 4; */
     /* circle_MATERIAL.refractionTexture = new BABYLON.Texture("../../assets/env/CUBEMAP_refraction", this.scene);
@@ -95,21 +101,7 @@ export class Page001Service {
 
     BABYLON.SceneLoader.ImportMeshAsync("brink", "../../assets/glb/page-001/", "brink.glb", this.scene).then((result) => {
       this.brink = this.scene.getMeshByName("brink");
-      probe.renderList.push(this.brink);
     });
-
-    circle_MATERIAL.refractionTexture = probe.cubeTexture;
-
-    var motionblur = new BABYLON.MotionBlurPostProcess(
-      "mb", // The name of the effect.
-      this.scene, // The scene containing the objects to blur according to their velocity.
-      1.0, // The required width/height ratio to downsize to before computing the render pass.
-      this.camera // The camera to apply the render pass to.
-  );
-  motionblur.isObjectBased = false;
-
-    probe.cubeTexture.addPostProcess = motionblur;
-    circle_MATERIAL.indexOfRefraction = 0.8;
 
     BABYLON.SceneLoader.ImportMeshAsync("glass", "../../assets/glb/page-001/", "glass.glb", this.scene).then((result) => {
       this.glass = this.scene.getMeshByName("glass");
