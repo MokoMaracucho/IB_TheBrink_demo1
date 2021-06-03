@@ -22,6 +22,7 @@ export class Page001Service {
   private light: BABYLON.Light;
 
   private glass;
+  private glass_border;
   private star;
   private brink;
   private lion;
@@ -68,19 +69,20 @@ export class Page001Service {
     this.camera.attachControl(canvas, true);
 
     this.light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), this.scene);
-    this.light.intensity = 1;
+    this.light.intensity = 4;
 
     BABYLON.SceneLoader.ImportMeshAsync("lion", "../../assets/glb/page-001/", "lion.glb", this.scene).then((result) => {
       this.lion = this.scene.getMeshByName("lion");
-      this.lion.material.reflectionTexture = null;
+      console.log(this.lion.material.toString());
     });
 
-    var pointLight = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(1, 2.4, 10), this.scene);
+    var pointLight = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0, 0, -0), this.scene);
+    pointLight.position = new BABYLON.Vector3(0, 2.4, 10);
     pointLight.intensity = 1;
 
     const circle_MATERIAL = new BABYLON.PBRMaterial('BoxMaterial', this.scene);
-    circle_MATERIAL.diffuseColor = new BABYLON.Vector4(1, 1, 1, 0.1);
-    circle_MATERIAL.metallic = 0.1;
+    /* circle_MATERIAL.diffuseColor = new BABYLON.Vector4(1, 1, 1, 0.1); */
+    circle_MATERIAL.metallic = 0.2;
     circle_MATERIAL.roughness = 0.2;
 
     circle_MATERIAL.subSurface.isRefractionEnabled = true;
@@ -118,6 +120,16 @@ export class Page001Service {
       this.glass.material.bumpTexture.uScale = 10;
       this.glass.material.bumpTexture.vScale = 10; */
       /* this.circle.refractionTexture = refractionTexture; */
+    });
+
+    const glass_border_MATERIAL = new BABYLON.PBRMaterial('BoxMaterial', this.scene);
+    /* glass_border_MATERIAL.albedoColor = new BABYLON.Vector3(0.2, 0.2, 0.2); */
+    glass_border_MATERIAL.metallic = 0.3;
+    glass_border_MATERIAL.roughness = 0.8;
+
+    BABYLON.SceneLoader.ImportMeshAsync("glass_border", "../../assets/glb/page-001/", "glass_border.glb", this.scene).then((result) => {
+      this.glass_border = this.scene.getMeshByName("glass_border");
+      this.glass_border.material = glass_border_MATERIAL;
     });
 
     BABYLON.SceneLoader.ImportMeshAsync("star", "../../assets/glb/page-001/", "star.glb", this.scene).then((result) => {
